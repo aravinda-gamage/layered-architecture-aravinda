@@ -7,7 +7,8 @@ import com.example.layeredarchitecture.view.tdm.ItemTM;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ItemDaoImpl {
+public class ItemDaoImpl implements ItemDao{
+    @Override
     public ArrayList<ItemDTO> getAllItem() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();
@@ -24,6 +25,7 @@ public class ItemDaoImpl {
         return allItem;
     }
 
+    @Override
     public boolean deleteItem(String code) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
@@ -31,6 +33,7 @@ public class ItemDaoImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public void updateItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
@@ -41,6 +44,7 @@ public class ItemDaoImpl {
         pstm.executeUpdate();
     }
 
+    @Override
     public boolean saveItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)");
@@ -52,11 +56,14 @@ public class ItemDaoImpl {
         //tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
     }
 
+    @Override
     public ResultSet genarateCode() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         ResultSet resultSet = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1");
         return resultSet;
     }
+
+    @Override
     public boolean existItem(String code) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");

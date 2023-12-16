@@ -1,5 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.CustomerDao;
+import com.example.layeredarchitecture.dao.CustomerDao;
 import com.example.layeredarchitecture.dao.CustomerDaoImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
@@ -69,7 +71,7 @@ public class ManageCustomersFormController {
         tblCustomers.getItems().clear();
         /*Get all customers*/
         try {
-            CustomerDaoImpl customerDAO = new CustomerDaoImpl();
+            CustomerDao customerDAO = new CustomerDaoImpl();
             ArrayList<CustomerDTO> allCustomer = customerDAO.getAllCustomer();
             for (CustomerDTO dto:allCustomer){
                 tblCustomers.getItems().add(
@@ -155,7 +157,7 @@ public class ManageCustomersFormController {
                 pstm.setString(2, name);
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
-                CustomerDaoImpl customerDao = new CustomerDaoImpl();
+                CustomerDao customerDao = new CustomerDaoImpl();
                 boolean isSaved = customerDao.saveCustomer(new CustomerDTO(id, name, address));
 
                 if(isSaved) {
@@ -181,7 +183,7 @@ public class ManageCustomersFormController {
                 pstm.setString(3, id);
                 pstm.executeUpdate();*/
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
-                CustomerDaoImpl customerDao = new CustomerDaoImpl();
+                CustomerDao customerDao = new CustomerDaoImpl();
                 customerDao.updateCustomer(customerDTO);
 
             } catch (SQLException e) {
@@ -219,7 +221,7 @@ public class ManageCustomersFormController {
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
             pstm.executeUpdate();*/
-            CustomerDaoImpl customerDao = new CustomerDaoImpl();
+            CustomerDao customerDao = new CustomerDaoImpl();
             //boolean isDelete = customerDao.deleteCustomer(id);
             if(customerDao.deleteCustomer(id)) {
                 tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
@@ -239,7 +241,7 @@ public class ManageCustomersFormController {
             /*Connection connection = DBConnection.getDbConnection().getConnection();
             ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");*/
 
-            CustomerDaoImpl dao = new CustomerDaoImpl();
+            CustomerDao dao = new CustomerDaoImpl();
             ResultSet resultSet = dao.generateId();
             if (resultSet.next()) {
                 String id = resultSet.getString("id");
