@@ -39,6 +39,7 @@ public class ManageCustomersFormController {
     public TextField txtCustomerAddress;
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
+    CustomerDao customerDao = new CustomerDaoImpl();
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -71,8 +72,8 @@ public class ManageCustomersFormController {
         tblCustomers.getItems().clear();
         /*Get all customers*/
         try {
-            CustomerDao customerDAO = new CustomerDaoImpl();
-            ArrayList<CustomerDTO> allCustomer = customerDAO.getAllCustomer();
+            //CustomerDao customerDAO = new CustomerDaoImpl();
+            ArrayList<CustomerDTO> allCustomer = customerDao.getAllCustomer();
             for (CustomerDTO dto:allCustomer){
                 tblCustomers.getItems().add(
                         new CustomerTM(
@@ -157,7 +158,7 @@ public class ManageCustomersFormController {
                 pstm.setString(2, name);
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
-                CustomerDao customerDao = new CustomerDaoImpl();
+                //CustomerDao customerDao = new CustomerDaoImpl();
                 boolean isSaved = customerDao.saveCustomer(new CustomerDTO(id, name, address));
 
                 if(isSaved) {
@@ -183,7 +184,7 @@ public class ManageCustomersFormController {
                 pstm.setString(3, id);
                 pstm.executeUpdate();*/
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
-                CustomerDao customerDao = new CustomerDaoImpl();
+                //CustomerDao customerDao = new CustomerDaoImpl();
                 customerDao.updateCustomer(customerDTO);
 
             } catch (SQLException e) {
@@ -221,7 +222,7 @@ public class ManageCustomersFormController {
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
             pstm.executeUpdate();*/
-            CustomerDao customerDao = new CustomerDaoImpl();
+            //CustomerDao customerDao = new CustomerDaoImpl();
             //boolean isDelete = customerDao.deleteCustomer(id);
             if(customerDao.deleteCustomer(id)) {
                 tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
@@ -241,8 +242,8 @@ public class ManageCustomersFormController {
             /*Connection connection = DBConnection.getDbConnection().getConnection();
             ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");*/
 
-            CustomerDao dao = new CustomerDaoImpl();
-            ResultSet resultSet = dao.generateId();
+            //CustomerDao dao = new CustomerDaoImpl();
+            ResultSet resultSet = customerDao.generateId();
             if (resultSet.next()) {
                 String id = resultSet.getString("id");
                 int newCustomerId = Integer.parseInt(id.replace("C00-", "")) + 1;
